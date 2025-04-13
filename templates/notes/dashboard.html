@@ -1,0 +1,72 @@
+{%  extends 'base.html' %}
+{% block title %}Dashboard - NotesShare{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+    <div class="row mb-4">
+        <div class="col-12">
+            <h2><i class="fas fa-tachometer-alt me-2"></i>Dashboard</h2>
+            <p class="lead">Welcome back, {{ user.username }}! Here's an overview of your notes.</p>
+        </div>
+    </div>
+
+    <div class="row mb-5">
+        <div class="col-md-6 mb-4">
+            <div class="card dashboard-card h-100">
+                <div class="card-body text-center">
+                    <i class="fas fa-sticky-note fa-4x text-primary mb-3"></i>
+                    <h3 class="card-title">Total Notes</h3>
+                    <h1 class="display-4 fw-bold">{{ notes_count }}</h1>
+                    <p class="card-text">You have uploaded {{ notes_count }} notes so far.</p>
+                    <a href="{% url 'notes_list' %}" class="btn btn-primary mt-2">View All Notes</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6 mb-4">
+            <div class="card dashboard-card h-100">
+                <div class="card-body text-center">
+                    <i class="fas fa-plus-circle fa-4x text-success mb-3"></i>
+                    <h3 class="card-title">Add New Note</h3>
+                    <p class="card-text mt-4">Upload a new note to your collection and enhance your knowledge base.</p>
+                    <a href="{% url 'add_note' %}" class="btn btn-success mt-2">Upload New Note</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-6 mb-4">
+            <div class="card dashboard-card h-100">
+                <div class="card-body">
+                    <h3 class="card-title mb-4"><i class="fas fa-search me-2"></i>Quick Search</h3>
+                    <form action="{% url 'search' %}" method="GET">
+                        <div class="input-group mb-3">
+                            <input type="text" class="form-control" placeholder="Search your notes..." name="q">
+                            <button class="btn btn-primary" type="submit">Search</button>
+                        </div>
+                    </form>
+                    <p class="text-muted">Search your notes by title or subject</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6 mb-4">
+            <div class="card dashboard-card h-100">
+                <div class="card-body">
+                    <h3 class="card-title mb-4"><i class="fas fa-user-circle me-2"></i>Account Management</h3>
+                    <div class="list-group">
+                        <a href="{% url 'profile' %}" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
+                            <div><i class="fas fa-id-card me-2"></i>Update Profile</div>
+                            <i class="fas fa-chevron-right"></i>
+                        </a>
+                        <a href="{% url 'change_password' %}" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
+                            <div><i class="fas fa-key me-2"></i>Change Password</div>
+                            <i class="fas fa-chevron-right"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+ 

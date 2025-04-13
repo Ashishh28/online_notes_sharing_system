@@ -1,0 +1,85 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container py-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2 class="mb-0">My Notes</h2>
+        <a href="{% url 'upload_note' %}" class="btn btn-primary">
+            <i class="fas fa-plus me-2"></i>Upload Note
+        </a>
+    </div>
+
+    <!-- Search Bar -->
+    <div class="card mb-4 shadow-sm">
+        <div class="card-body">
+            <form method="GET" action="">
+                <div class="input-group">
+                    <input type="text" name="q" class="form-control" 
+                           placeholder="Search notes..." value="{{ request.GET.q }}">
+                    <button class="btn btn-outline-secondary" type="submit">
+                        <i class="fas fa-search"></i>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Notes Grid -->
+    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+        {% for note in notes %}
+        <div class="col">
+            <div class="card h-100 shadow-sm border-0">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-start mb-2">
+                        <h5 class="card-title mb-0">{{ note.title }}</h5>
+                        <span class="badge bg-{% if note.public %}success{% else %}warning{% endif %}">
+                            {% if note.public %}Public{% else %}Private{% endif %}
+                        </span>
+                    </div>
+                    <p class="text-muted small mb-3">{{ note.subject }}</p>
+                    
+                    <div class="d-flex justify-content-between align-items-center">
+                        <a href="{{ note.file.url }}" class="btn btn-sm btn-outline-primary">
+                            <i class="fas fa-download me-1"></i>Download
+                        </a>
+                        <div>
+                            <a href="{% url 'update_note' note.id %}" class="btn btn-sm btn-outline-secondary">
+                                <i class="fas fa-edit"></i>
+                            </a>
+                            <a href="{% url 'delete_note' note.id %}" 
+                               class="btn btn-sm btn-outline-danger"
+                               onclick="return confirm('Delete this note?')">
+                                <i class="fas fa-trash"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-footer bg-transparent border-top-0 text-muted small">
+                    Uploaded {{ note.uploaded_at|timesince }} ago
+                </div>
+            </div>
+        </div>
+        {% empty %}
+        <div class="col-12">
+            <div class="alert alert-info text-center">
+                No notes found. Upload your first note!
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+<style>
+    .card {
+        transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+    }
+    .badge {
+        font-size: 0.7rem;
+        padding: 0.35em 0.65em;
+    }
+</style>
+{% endblock %}

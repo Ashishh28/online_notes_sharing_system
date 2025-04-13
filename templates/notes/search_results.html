@@ -1,0 +1,56 @@
+{%  extends 'base.html' %}
+{% block title %}Search Results - NotesShare{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+    <div class="mb-4">
+        <h2><i class="fas fa-search me-2"></i>Search Results</h2>
+        {% if query %}
+            <p class="lead">Results for "{{ query }}"</p>
+        {% else %}
+            <p class="lead">All Notes</p>
+        {% endif %}
+    </div>
+
+    {% if notes %}
+        <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+            {% for note in notes %}
+                <div class="col">
+                    <div class="card h-100 shadow-sm">
+                        <div class="card-header bg-light">
+                            <h5 class="card-title mb-0">{{ note.title }}</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="badge bg-primary mb-2">{{ note.subject }}</div>
+                            <p class="card-text">{{ note.description|truncatechars:100 }}</p>
+                        </div>
+                        <div class="card-footer bg-white">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <small class="text-muted">Updated {{ note.updated_at|date:"M d, Y" }}</small>
+                                <div class="btn-group">
+                                    <a href="{{ note.file.url }}" class="btn btn-sm btn-outline-primary" target="_blank"><i class="fas fa-download me-1"></i>Download</a>
+                                    <button class="btn btn-sm btn-outline-primary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                        <i class="fas fa-ellipsis-v"></i>
+                                    </button>
+                                    <ul class="dropdown-menu dropdown-menu-end">
+                                        <li><a class="dropdown-item" href="{% url 'update_note' note.id %}"><i class="fas fa-edit me-2"></i>Edit</a></li>
+                                        <li><a class="dropdown-item text-danger" href="{% url 'delete_note' note.id %}"><i class="fas fa-trash me-2"></i>Delete</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <div class="alert alert-info text-center p-5">
+            <i class="fas fa-info-circle fa-3x mb-3"></i>
+            <h4>No results found</h4>
+            <p>No notes matching your search criteria were found.</p>
+            <a href="{% url 'notes_list' %}" class="btn btn-primary mt-2"><i class="fas fa-sticky-note me-2"></i>View All Notes</a>
+        </div>
+    {% endif %}
+</div>
+{% endblock %}
+ 
